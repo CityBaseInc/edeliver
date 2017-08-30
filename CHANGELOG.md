@@ -1,6 +1,18 @@
 eDeliver Versions
 =================
 
+__1.4.4__
+
+- Removed support for spaces in project path. It broke using multiple hosts.
+- Update Readme
+
+__1.4.3__
+
+- Propagate exit code for the synchronous migration
+- Added `post_extract_release_archive` hook
+- Added support for spaces in project path.
+- Pass branch variable when building release
+
 __1.4.2__
 
 - Support Elixir 1.3.4 in addition to 1.4

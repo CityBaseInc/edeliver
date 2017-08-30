@@ -52,7 +52,7 @@ def application, do: [
 defp deps do
   [
     ...
-    {:edeliver, "~> 1.4.2"},
+    {:edeliver, "~> 1.4.4"},
     {:distillery, ">= 0.8.0", warn_missing: false},
     # or :exrm
   ]
@@ -140,14 +140,14 @@ The Erlang runtime (OTP) and the Elixir runtime are packaged with the release—
 
 ### Mix considerations
 
-If using [mix](http://elixir-lang.org/getting_started/mix/1.html), add edeliver and your build tool and your build tool ([distillery](https://hex.pm/packages/distillery) or [exrm](https://hex.pm/packages/exrm)) as [hex package](https://hex.pm/packages/edeliver) to your `mix.exs` config:
+If using [mix](http://elixir-lang.org/getting_started/mix/1.html), add edeliver and your build tool ([distillery](https://hex.pm/packages/distillery) or [exrm](https://hex.pm/packages/exrm)) as [hex package](https://hex.pm/packages/edeliver) to your `mix.exs` config:
 
 ```exs
 defp deps do
   [
-  	{:edeliver, ">= 1.4.2"},
+    {:edeliver, ">= 1.4.4"},
     {:distillery, ">= 0.8.0", warn_missing: false},
-	# or {:exrm, ">= 0.16.0", warn_missing: false},
+    # or {:exrm, ">= 0.16.0", warn_missing: false},
   ]
 end
 ```
@@ -171,7 +171,7 @@ When using rebar, edeliver can be added as [rebar](https://github.com/basho/reba
 
     {deps, [
       % ...
-      {edeliver, "1.4.2",
+      {edeliver, "1.4.4",
         {git, "git://github.com/boldpoker/edeliver.git", {branch, master}}}
     ]}.
 
@@ -207,14 +207,17 @@ DELIVER_TO="/opt/my-erlang-app" # deploy directory on production hosts
 
 To use different configurations on different hosts, you can [configure edeliver to link](https://github.com/boldpoker/edeliver/wiki/Use-per-host-configuration) the `vm.args` and/or the `sys.config` files in the release package by setting the `LINK_VM_ARGS=/path/to/vm.args` and/or `LINK_SYS_CONFIG=/path/to/sys.config` variables in the edeliver config if you use [mix](http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html) and [exrm](https://github.com/bitwalker/exrm) or [distillery](https://github.com/bitwalker/distillery) to build the releases.
 
-Another strategy is to use runtime environment variable evaluation (available for [exrm](https://github.com/bitwalker/exrm) and [relx](https://github.com/erlware/relx)). For more information on this technique, see [Plataformatec - Deploying Elixir with edeliver](http://blog.plataformatec.com.br/2016/06/deploying-elixir-applications-with-edeliver/)
+Another strategy is to use runtime environment variable evaluation (available for [distillery](https://github.com/bitwalker/distillery), [exrm](https://github.com/bitwalker/exrm) and [relx](https://github.com/erlware/relx)). For more information on this technique, see [Plataformatec - Deploying Elixir with edeliver](http://blog.plataformatec.com.br/2016/06/deploying-elixir-applications-with-edeliver/)
 
-If you wish to use `RELX_REPLACE_OS_VARS=true`, ensure this is _exported_ in your deployment environment and all the environment variables which should replace default configuration.
+This strategy relies on exporting an environment variable in your deployment environment to signal that environment variable replacement should be performed, as well as exporting
+all of the environment variables your configuration relies on.
+
+For `exrm` and `relx`, export `RELX_REPLACE_OS_VARS=true`. For `distillery`, export `REPLACE_OS_VARS=true`.
 
 For example in `~/.profile`
 
 ```sh
-export RELX_REPLACE_OS_VARS=true
+export REPLACE_OS_VARS=true
 export MY_CUSTOM_DATABASE_PORT=5433
 ```
 
